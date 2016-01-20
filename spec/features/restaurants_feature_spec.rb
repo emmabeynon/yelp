@@ -96,4 +96,35 @@ feature 'restaurants' do
     end
   end
 
+  context 'when not signed in' do
+    context 'creating restaurants' do
+      scenario 'prevents user from adding a restaurant' do
+        visit '/'
+        click_link 'Add a restaurant'
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
+        expect(page).not_to have_button 'Create Restaurant'
+      end
+    end
+
+    context 'editing restaurants' do
+      before { Restaurant.create name: 'KFC'}
+      scenario 'prevents user from editing a restaurant' do
+        visit '/'
+        click_link 'Edit KFC'
+        expect(page).to have_content 'You need to sign in or sign up before continuing.'
+        expect(page).not_to have_button 'Update Restaurant'
+      end
+    end
+
+    context 'deleting restaurants' do
+      before { Restaurant.create name: 'KFC'}
+      scenario 'prevents user from deleting a restaurant' do
+        visit '/'
+        click_link 'Delete KFC'
+        expect(page).to have_content 'You need to sign in or sign up before continuing'
+        expect(page).not_to have_button 'Delete Restaurant'
+      end
+    end
+  end
+
 end
