@@ -31,12 +31,12 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'omniauth-facebook'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'devise'
-  gem 'omniauth-facebook'
 end
 
 group :development do
@@ -52,4 +52,5 @@ group :test do
   gem 'capybara'
   gem 'shoulda'
   gem 'rspec-collection_matchers'
+  gem 'database_cleaner'
 end
