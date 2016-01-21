@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 feature 'reviewing' do
-  before {Restaurant.create name: 'KFC'}
+  # let!(:user) {User.create(email: 'john@doe.com')}
+  # let!(:restaurant) {Restaurant.create(name: 'KFC', user: user)}
+  # let!(:review) {Review.create(user: user, restaurant: restaurant)}
 
   scenario 'allows users to leave a review using a form' do
     sign_in
@@ -24,5 +26,16 @@ feature 'reviewing' do
     click_link 'Review KFC'
     click_button 'Leave Review'
     expect(page).to have_content "You have already reviewed this restaurant"
+  end
+
+  scenario 'prevents user from deleting other users\' reviews' do
+    user = User.create(email: 'john@doe.com', password: 'johndoee', password_confirmation: 'johndoee')
+    restaurant = Restaurant.create(name: 'ABC', user: user)
+    review = Review.create(user: user, restaurant: restaurant, rating: 1)
+    sign_in
+    visit '/restaurants'
+    click_link 'ABC'
+    click_link 'Delete Review'
+    expect(page).to have_content 'You cannot delete a review you did not write'
   end
 end

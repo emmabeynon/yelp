@@ -21,4 +21,15 @@ class ReviewsController < ApplicationController
   def review_params
     params.require(:review).permit(:thoughts, :rating)
   end
+
+  def destroy
+    @review = Review.find(params[:id])
+    if current_user.reviews.include? @review
+      @review.destroy
+      flash[:notice] = 'Review deleted successfully'
+    else
+      flash[:notice] = 'Error: You cannot delete a review you did not write'
+    end
+      redirect_to restaurants_path
+  end
 end
