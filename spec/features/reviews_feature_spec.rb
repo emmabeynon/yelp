@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 feature 'reviewing' do
-  # let!(:user) {User.create(email: 'john@doe.com')}
-  # let!(:restaurant) {Restaurant.create(name: 'KFC', user: user)}
-  # let!(:review) {Review.create(user: user, restaurant: restaurant)}
+  let!(:user) {User.create(email: 'john@doe.com', password: 'johndoee', password_confirmation: 'johndoee')}
+  let!(:restaurant) {Restaurant.create(name: 'ABC', user: user)}
+  let!(:review) {Review.create(user: user, restaurant: restaurant, rating: 1)}
 
   scenario 'allows users to leave a review using a form' do
     sign_in
@@ -29,13 +29,23 @@ feature 'reviewing' do
   end
 
   scenario 'prevents user from deleting other users\' reviews' do
-    user = User.create(email: 'john@doe.com', password: 'johndoee', password_confirmation: 'johndoee')
-    restaurant = Restaurant.create(name: 'ABC', user: user)
-    review = Review.create(user: user, restaurant: restaurant, rating: 1)
     sign_in
     visit '/restaurants'
     click_link 'ABC'
     click_link 'Delete Review'
     expect(page).to have_content 'You cannot delete a review you did not write'
   end
+
+  scenario 'displays an average rating for all reviews' do
+    sign_up
+    sign_in
+    leave_review('So so', '3')
+    click_link 'Sign out'
+    sign_up('john@doe.com','johndoee')
+    sign_in('john@doe.com','johndoee')
+    leave_review('Great', '5')
+    expect(page).to have_content('Average rating: 4')
+  end
+
+
 end
