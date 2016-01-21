@@ -98,10 +98,20 @@ feature 'restaurants' do
       before { Restaurant.create name: 'KFC'}
       scenario 'removes a restaurant when a user clicks a delete link' do
         sign_in
-        visit '/restaurants'
-        click_link 'Delete KFC'
-        expect(page).not_to have_content 'KFC'
+        click_link 'Add a restaurant'
+        fill_in 'Name', with: 'McDonalds'
+        click_button 'Create Restaurant'
+        visit '/'
+        click_link 'Delete McDonalds'
+        expect(page).not_to have_content 'McDonalds'
         expect(page).to have_content 'Restaurant deleted successfully'
+      end
+
+      scenario 'prevents users from deleting a restaurant they did not create' do
+        sign_in
+        visit '/'
+        click_link 'Delete KFC'
+        expect(page).to have_content 'Error: You cannot delete this restaurant as you did not create it'
       end
     end
   end
