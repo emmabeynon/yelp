@@ -10,7 +10,7 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    @restaurant = Restaurant.new(restaurant_params)
+    @restaurant = current_user.restaurants.new(restaurant_params)
     if @restaurant.save
       redirect_to restaurants_path
     else
@@ -28,6 +28,10 @@ class RestaurantsController < ApplicationController
 
   def edit
     @restaurant = Restaurant.find(params[:id])
+    unless current_user.restaurants.include? @restaurant
+      flash[:notice] = 'Error: You cannot edit this restaurant as you did not create it'
+      redirect_to restaurants_path
+    end
   end
 
   def update

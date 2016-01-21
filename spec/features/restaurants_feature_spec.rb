@@ -73,14 +73,24 @@ feature 'restaurants' do
 
     context 'editing restaurants' do
       before { Restaurant.create name: 'KFC' }
-      scenario 'let a user edit a restaurant' do
+      scenario 'lets a user edit a restaurant only if they created it' do
         sign_in
         visit '/restaurants'
-        click_link 'Edit KFC'
-        fill_in 'Name', with: 'Kentucky Fried Chicken'
+        click_link 'Add a restaurant'
+        fill_in 'Name', with: 'McDonalds'
+        click_button 'Create Restaurant'
+        visit '/'
+        click_link 'Edit McDonalds'
+        fill_in 'Name', with: 'MaccyD'
         click_button 'Update Restaurant'
-        expect(page).to have_content 'Kentucky Fried Chicken'
-        expect(current_path).to eq '/restaurants'
+        expect(page).to have_content 'MaccyD'
+      end
+
+      scenario 'does not let a user edit a restaurant if they did not create it' do
+        sign_in
+        visit '/'
+        click_link 'Edit KFC'
+        expect(page).to have_content 'Error: You cannot edit this restaurant as you did not create it'
       end
     end
 
@@ -110,9 +120,7 @@ feature 'restaurants' do
       before { Restaurant.create name: 'KFC'}
       scenario 'prevents user from editing a restaurant' do
         visit '/'
-        click_link 'Edit KFC'
-        expect(page).to have_content 'You need to sign in or sign up before continuing.'
-        expect(page).not_to have_button 'Update Restaurant'
+        expect(page).not_to have_button 'Edit KFC'
       end
     end
 

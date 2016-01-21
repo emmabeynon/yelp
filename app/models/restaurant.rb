@@ -13,4 +13,7 @@ class Restaurant < ActiveRecord::Base
                     user_id: current_user.id)
   end
 
+  def user_added_restaurant?(user)
+    @user = Restaurant.find_by user_id: user.id
+  end
 end
