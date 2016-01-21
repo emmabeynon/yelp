@@ -18,7 +18,6 @@ feature 'restaurants' do
       click_button 'Sign up'
       Restaurant.create(name: 'KFC')
     end
-
     scenario 'display restaurants' do
       visit '/restaurants'
       expect(page).to have_content('KFC')
@@ -62,18 +61,18 @@ feature 'restaurants' do
 
     context 'viewing restaurants' do
       let!(:user){User.create(email: 'jane@done.com', password: 'janedoee', password_confirmation: 'janedoee')}
-      let!(:kfc){Restaurant.create(name:'ABC', user: user)}
+      let!(:restaurant){Restaurant.create(name:'ABC', user: user)}
       scenario 'lets a user view a restaurant' do
         sign_in
         visit '/restaurants'
         click_link 'ABC'
         expect(page).to have_content 'ABC'
-        expect(current_path).to eq "/restaurants/#{kfc.id}"
+        expect(current_path).to eq "/restaurants/#{restaurant.id}"
       end
     end
 
     context 'editing restaurants' do
-      before { Restaurant.create name: 'KFC' }
+      let(:restaurant) { create :restaurant, :first}
       scenario 'lets a user edit a restaurant only if they created it' do
         sign_in
         visit '/restaurants'
@@ -96,7 +95,7 @@ feature 'restaurants' do
     end
 
     context 'deleting restaurants' do
-      before { Restaurant.create name: 'KFC'}
+      let(:restaurant) { create :restaurant, :first}
       scenario 'removes a restaurant when a user clicks a delete link' do
         sign_in
         click_link 'Add a restaurant'
@@ -128,7 +127,7 @@ feature 'restaurants' do
     end
 
     context 'editing restaurants' do
-      before { Restaurant.create name: 'KFC'}
+      let(:restaurant) { create :restaurant, :first}
       scenario 'prevents user from editing a restaurant' do
         visit '/'
         expect(page).not_to have_button 'Edit KFC'
@@ -136,7 +135,7 @@ feature 'restaurants' do
     end
 
     context 'deleting restaurants' do
-      before { Restaurant.create name: 'KFC'}
+      let(:restaurant) { create :restaurant, :first}
       scenario 'prevents user from deleting a restaurant' do
         visit '/'
         click_link 'Delete KFC'
