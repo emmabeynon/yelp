@@ -21,4 +21,19 @@ describe Restaurant, type: :model do
       expect(restaurant.user_id).not_to be_nil
     end
   end
+
+  describe '#build_review' do
+    let(:user) {User.create(email: 'jane@doe.com')}
+    let(:restaurant) {Restaurant.create(name: 'KFC')}
+    let(:review_params) {{rating: 1, thoughts: 'whatever'}}
+    it 'returns a review' do
+      review = restaurant.build_review(review_params, user)
+      expect(review).to be_a Review
+    end
+
+    it 'creates a review associated with the correct user' do
+      review = restaurant.build_review(review_params, user)
+      expect(review.user).to eq user
+    end
+  end
 end
