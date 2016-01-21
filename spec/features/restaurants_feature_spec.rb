@@ -61,7 +61,7 @@ feature 'restaurants' do
     end
 
     context 'viewing restaurants' do
-      let!(:kfc){Restaurant.create(name:'KFC', id: 1)}
+      let!(:kfc){Restaurant.create(name:'KFC', id: 2)}
       scenario 'lets a user view a restaurant' do
         sign_in
         visit '/restaurants'
