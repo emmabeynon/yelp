@@ -61,12 +61,13 @@ feature 'restaurants' do
     end
 
     context 'viewing restaurants' do
-      let!(:kfc){Restaurant.create(name:'KFC', id: 2)}
+      let!(:user){User.create(email: 'jane@done.com', password: 'janedoee', password_confirmation: 'janedoee')}
+      let!(:kfc){Restaurant.create(name:'ABC', user: user)}
       scenario 'lets a user view a restaurant' do
         sign_in
         visit '/restaurants'
-        click_link 'KFC'
-        expect(page).to have_content 'KFC'
+        click_link 'ABC'
+        expect(page).to have_content 'ABC'
         expect(current_path).to eq "/restaurants/#{kfc.id}"
       end
     end
