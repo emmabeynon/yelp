@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Restaurant, type: :model do
   it { is_expected.to have_many :reviews }
   it { should belong_to (:user) }
+  it { should have_many(:reviews).dependent(:destroy) }
 
   describe 'creating a restaurant' do
     it 'is not valid with a name of less than 3 characters' do
@@ -15,10 +16,6 @@ describe Restaurant, type: :model do
       Restaurant.create(name: 'Moe\'s Tavern')
       restaurant = Restaurant.new(name: 'Moe\'s Tavern')
       expect(restaurant).to have(1).error_on(:name)
-    end
-
-    xit 'require a user id' do
-      expect(restaurant.user_id).not_to be_nil
     end
   end
 

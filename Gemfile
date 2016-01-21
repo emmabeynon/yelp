@@ -38,6 +38,7 @@ gem 'dotenv'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'dotenv-rails', :require => 'dotenv/rails-now'
 end
 
 group :development do
@@ -55,4 +56,5 @@ group :test do
   gem 'rspec-collection_matchers'
   gem 'database_cleaner'
   gem 'poltergeist'
+  gem 'launchy'
 end
