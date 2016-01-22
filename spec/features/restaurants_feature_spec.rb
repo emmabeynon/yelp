@@ -46,6 +46,15 @@ feature 'restaurants' do
         expect(current_path).to eq '/restaurants'
       end
 
+      scenario 'allows user to upload an image for the restaurant' do
+        sign_in
+        visit '/restaurants'
+        click_link 'Add a restaurant'
+        fill_in 'Name', with: 'McDonalds'
+        page.attach_file('Image', Rails.root + 'spec/factories/test.jpg')
+        expect(attach_file('Image', 'spec/factories/test.jpg')).to be_truthy
+      end
+
       context 'an invalid restaurant' do
         it 'does not let you submit a name that is too short' do
           sign_in

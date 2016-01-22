@@ -1,8 +1,7 @@
 $(document).ready(function() {
-  $('.endorsements-link').on('click', function(event) {
-    event.preventDefault();
+  $('a.endorsements-link').on('click', function(event) {
     event.stopImmediatePropagation();
-
+    event.preventDefault();
     var endorsementCount = $(this).siblings('.endorsements_count');
 
     $.post(this.href, function(response) {

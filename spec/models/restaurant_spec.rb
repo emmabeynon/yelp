@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Restaurant, type: :model do
   it { is_expected.to have_many :reviews }
@@ -38,6 +38,8 @@ describe Restaurant, type: :model do
 
   describe '#average_rating' do
     let(:restaurant) { create :restaurant, :first }
+    let(:user_1) { create :user, :first }
+    let(:user_2) { create :user, :second }
     context 'no reviews' do
       it 'returns "N/A" when there are no reviews' do
         expect(restaurant.average_rating).to eq 'N/A'
@@ -53,8 +55,8 @@ describe Restaurant, type: :model do
 
     context 'multiple reviews' do
       it 'returns the average' do
-        restaurant.reviews.create(rating: 1)
-        restaurant.reviews.create(rating: 5)
+        restaurant.reviews.create(rating: 1, user: user_1)
+        restaurant.reviews.create(rating: 5, user: user_2)
         expect(restaurant.average_rating).to eq 3
       end
     end
