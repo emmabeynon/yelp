@@ -1,5 +1,6 @@
 class RestaurantsController < ApplicationController
   before_action :authenticate_user!, :except => [:index, :show]
+  # before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
   def index
     @restaurants = Restaurant.all
@@ -51,4 +52,8 @@ class RestaurantsController < ApplicationController
       redirect_to '/restaurants'
   end
 
+  # private
+  # def set_s3_direct_post
+  #   @s3_direct_post = S3_BUCKET.presigned_post(key: "uploads/#{SecureRandom.uuid}/${filename}", success_action_status: '201', acl: 'public-read')
+  # end
 end

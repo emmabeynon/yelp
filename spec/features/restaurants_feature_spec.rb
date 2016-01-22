@@ -53,6 +53,8 @@ feature 'restaurants' do
         fill_in 'Name', with: 'McDonalds'
         page.attach_file('Image', Rails.root + 'spec/factories/test.jpg')
         expect(attach_file('Image', 'spec/factories/test.jpg')).to be_truthy
+        click_button 'Create Restaurant'
+        expect(page).to have_xpath("//img[contains(@src, \"thumb/test.jpg\")]")
       end
 
       context 'an invalid restaurant' do
